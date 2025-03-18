@@ -1,8 +1,8 @@
 {
   "name": "ComboScout",
   "short_name": "ComboScout",
-  "theme_color": "#ffffff",
-  "background_color": "#f03d41",
+  "theme_color": "#202e3c",
+  "background_color": "#0057a8",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
