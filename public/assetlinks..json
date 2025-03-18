@@ -1,0 +1,5 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : { "namespace": "android_app", "package_name": "org.team4096.scout2025",
+                 "sha256_cert_fingerprints": ["18:2E:94:CC:62:8E:53:67:80:46:68:47:DF:A4:E0:D4:D6:0E:9B:4E:DD:E7:2A:01:C7:54:C3:BA:CF:25:82:B7"] }
+  }]
