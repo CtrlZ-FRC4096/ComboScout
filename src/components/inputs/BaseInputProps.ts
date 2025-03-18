@@ -1,7 +1,17 @@
 import { z } from 'zod';
 
 export const inputTypeSchema = z
-  .enum(['text', 'number', 'boolean', 'range', 'select', 'counter', 'timer'])
+  .enum([
+    'text',
+    'number',
+    'boolean',
+    'range',
+    'select',
+    'counter',
+    'timer',
+    'multi-select',
+    'image',
+  ])
   .describe('The type of input');
 
 export const inputBaseSchema = z.object({
@@ -35,14 +45,16 @@ export const numberInputSchema = inputBaseSchema.extend({
 export const selectInputSchema = inputBaseSchema.extend({
   type: z.literal('select'),
   choices: z.record(z.string()).optional().describe('The choices'),
-  multiSelect: z
-    .boolean()
-    .optional()
-    .describe('Whether multiple choices can be selected'),
   defaultValue: z
     .string()
     .default('')
     .describe('The default value. Must be one of the choices'),
+});
+
+export const multiSelectInputSchema = inputBaseSchema.extend({
+  type: z.literal('multi-select'),
+  choices: z.record(z.string()).optional().describe('The choices'),
+  defaultValue: z.array(z.string()).optional().describe('The default value'),
 });
 
 export const counterInputSchema = inputBaseSchema.extend({
@@ -69,6 +81,21 @@ export const booleanInputSchema = inputBaseSchema.extend({
 export const timerInputSchema = inputBaseSchema.extend({
   type: z.literal('timer'),
   defaultValue: z.number().default(0).describe('The default value'),
+  outputType: z
+    .enum(['average', 'list'])
+    .default('average')
+    .describe('The type of output to display in the scouting form'),
+});
+
+export const imageInputSchema = inputBaseSchema.extend({
+  type: z.literal('image'),
+  defaultValue: z
+    .string()
+    .default('')
+    .describe('The URL to a statically hosted image'),
+  width: z.number().optional().describe('The width of the image in pixels'),
+  height: z.number().optional().describe('The height of the image in pixels'),
+  alt: z.string().optional().describe('The alt text for the image'),
 });
 
 export const sectionSchema = z.object({
@@ -79,9 +106,11 @@ export const sectionSchema = z.object({
       stringInputSchema,
       numberInputSchema,
       selectInputSchema,
+      multiSelectInputSchema,
       rangeInputSchema,
       booleanInputSchema,
       timerInputSchema,
+      imageInputSchema,
     ]),
   ),
 });
@@ -93,7 +122,7 @@ const shadcnColorSchema = z
 const shadcnRadiusSchema = z
   .string()
   .regex(/([0-9]*.[0-9]+rem)/)
-  .optional()
+  .optional();
 
 export const colorSchemeSchema = z.object({
   background: shadcnColorSchema,
@@ -208,12 +237,14 @@ export type InputTypes = z.infer<typeof inputTypeSchema>;
 
 export type InputBase = z.infer<typeof inputBaseSchema>;
 export type SelectInputData = z.infer<typeof selectInputSchema>;
+export type MultiSelectInputData = z.infer<typeof multiSelectInputSchema>;
 export type StringInputData = z.infer<typeof stringInputSchema>;
 export type NumberInputData = z.infer<typeof numberInputSchema>;
 export type CounterInputData = z.infer<typeof counterInputSchema>;
 export type RangeInputData = z.infer<typeof rangeInputSchema>;
 export type BooleanInputData = z.infer<typeof booleanInputSchema>;
 export type TimerInputData = z.infer<typeof timerInputSchema>;
+export type ImageInputData = z.infer<typeof imageInputSchema>;
 
 export type InputPropsMap = {
   text: StringInputData;
@@ -221,8 +252,10 @@ export type InputPropsMap = {
   boolean: BooleanInputData;
   range: RangeInputData;
   select: SelectInputData;
+  'multi-select': MultiSelectInputData;
   counter: CounterInputData;
   timer: TimerInputData;
+  image: ImageInputData;
 };
 
 export type SectionProps = z.infer<typeof sectionSchema>;
