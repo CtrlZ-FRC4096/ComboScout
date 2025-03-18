@@ -63,11 +63,11 @@ export default function CounterInput(props: ConfigurableInputProps) {
 
   return (
     <div className="my-2 flex flex-row items-center justify-center">
-      <Button variant="outline" onClick={() => handleChange(-(data.step || 1))}>
+      <Button disabled={data.disabled} variant="outline" onClick={() => !data.disabled && handleChange(-(data.step || 1))}>
         <Minus />
       </Button>
       <h2 className="px-4 text-2xl dark:text-white">{value}</h2>
-      <Button variant="outline" onClick={() => handleChange(data.step || 1)}>
+      <Button disabled={data.disabled} variant="outline" onClick={() => !data.disabled && handleChange(data.step || 1)}>
         <Plus />
       </Button>
     </div>
