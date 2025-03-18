@@ -76,7 +76,7 @@ export function ConfigEditor(props: ConfigEditorProps) {
       validate: true,
       schemas: [
         {
-          uri: 'https://comboscout.poteshman.com/schema.json',
+          uri: 'https://scout.team4096.org/schema.json',
           fileMatch: ['*'],
           schema,
         },
